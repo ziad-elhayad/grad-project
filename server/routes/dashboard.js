@@ -1,0 +1,299 @@
+const express = require('express');
+const Employee = require('../models/Employee');
+const User = require('../models/User');
+const SalesOrder = require('../models/SalesOrder');
+const PurchaseOrder = require('../models/PurchaseOrder');
+const Product = require('../models/Product');
+const Customer = require('../models/Customer');
+const Attendance = require('../models/Attendance');
+const ProductionOrder = require('../models/ProductionOrder');
+const { protect } = require('../middleware/auth');
+
+const router = express.Router();
+
+// @route   GET /api/dashboard/kpis
+// @desc    Get dashboard KPIs
+// @access  Private
+router.get('/kpis', protect, async (req, res) => {
+  try {
+    // Get current date and start of month
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+
+    // Employee metrics - count from User model to match HR module
+    const totalEmployees = await User.countDocuments({ isActive: true });
+    const todayAttendance = await Attendance.countDocuments({
+      date: {
+        $gte: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+        $lt: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+      }
+    });
+
+    // Sales metrics
+    const totalSales = await SalesOrder.countDocuments();
+    const monthlySales = await SalesOrder.countDocuments({
+      orderDate: { $gte: startOfMonth }
+    });
+    const salesRevenue = await SalesOrder.aggregate([
+      { $match: { status: { $in: ['confirmed', 'shipped', 'delivered'] } } },
+      { $group: { _id: null, total: { $sum: { $ifNull: ['$total', 0] } } } }
+    ]);
+    const monthlyRevenue = await SalesOrder.aggregate([
+      { 
+        $match: { 
+          status: { $in: ['confirmed', 'shipped', 'delivered'] },
+          orderDate: { $gte: startOfMonth }
+        } 
+      },
+      { $group: { _id: null, total: { $sum: { $ifNull: ['$total', 0] } } } }
+    ]);
+
+    // Inventory metrics
+    const totalProducts = await Product.countDocuments({ isActive: true });
+    const lowStockProducts = await Product.countDocuments({
+      $expr: { $lte: ['$currentStock', '$minStockLevel'] },
+      isActive: true
+    });
+    const stockValue = await Product.aggregate([
+      { $match: { isActive: true } },
+      { $group: { _id: null, total: { $sum: { $multiply: ['$currentStock', '$unitCost'] } } } }
+    ]);
+
+    // Customer metrics
+    const totalCustomers = await Customer.countDocuments({ isActive: true });
+    const newCustomersThisMonth = await Customer.countDocuments({
+      createdAt: { $gte: startOfMonth }
+    });
+
+    // Production metrics
+    const totalProductionOrders = await ProductionOrder.countDocuments();
+    const pendingProductionOrders = await ProductionOrder.countDocuments({
+      status: 'pending'
+    });
+    const inProgressProductionOrders = await ProductionOrder.countDocuments({
+      status: 'in-progress'
+    });
+
+    // Purchase metrics
+    const totalPurchaseOrders = await PurchaseOrder.countDocuments();
+    const pendingPurchaseOrders = await PurchaseOrder.countDocuments({
+      status: 'pending'
+    });
+    const monthlyPurchases = await PurchaseOrder.aggregate([
+      { 
+        $match: { 
+          status: 'received',
+          receivedDate: { $gte: startOfMonth }
+        } 
+      },
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ]);
+
+    // Top selling product
+    const topProduct = await SalesOrder.aggregate([
+      { $match: { status: { $in: ['confirmed', 'shipped', 'delivered'] } } },
+      { $unwind: '$items' },
+      {
+        $group: {
+          _id: '$items.product',
+          totalQuantity: { $sum: '$items.quantity' },
+          totalRevenue: { $sum: '$items.total' }
+        }
+      },
+      { $sort: { totalQuantity: -1 } },
+      { $limit: 1 },
+      {
+        $lookup: {
+          from: 'products',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'product'
+        }
+      },
+      { $unwind: '$product' },
+      {
+        $project: {
+          name: '$product.name',
+          sku: '$product.sku',
+          totalQuantity: 1,
+          totalRevenue: 1
+        }
+      }
+    ]);
+
+    const kpis = {
+      employees: {
+        total: totalEmployees,
+        presentToday: todayAttendance,
+        attendanceRate: totalEmployees > 0 ? (todayAttendance / totalEmployees * 100).toFixed(1) : 0
+      },
+      sales: {
+        totalOrders: totalSales,
+        monthlyOrders: monthlySales,
+        totalRevenue: salesRevenue[0]?.total || 0,
+        monthlyRevenue: monthlyRevenue[0]?.total || 0
+      },
+      inventory: {
+        totalProducts,
+        lowStockAlerts: lowStockProducts,
+        totalValue: stockValue[0]?.total || 0
+      },
+      customers: {
+        total: totalCustomers,
+        newThisMonth: newCustomersThisMonth
+      },
+      production: {
+        totalOrders: totalProductionOrders,
+        pending: pendingProductionOrders,
+        inProgress: inProgressProductionOrders
+      },
+      purchasing: {
+        totalOrders: totalPurchaseOrders,
+        pending: pendingPurchaseOrders,
+        monthlySpending: monthlyPurchases[0]?.total || 0
+      },
+      topProduct: topProduct[0] || null
+    };
+
+    res.json({
+      success: true,
+      data: kpis
+    });
+  } catch (error) {
+    console.error('Get KPIs error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
+// @route   GET /api/dashboard/recent-activities
+// @desc    Get recent activities
+// @access  Private
+router.get('/recent-activities', protect, async (req, res) => {
+  try {
+    const activities = [];
+
+    // Recent sales orders
+    const recentSales = await SalesOrder.find()
+      .populate('customer', 'name')
+      .sort({ createdAt: -1 })
+      .limit(5);
+    
+    recentSales.forEach(order => {
+      activities.push({
+        type: 'sales',
+        action: 'New sales order',
+        description: `Order ${order.orderNumber} from ${order.customer.name}`,
+        timestamp: order.createdAt,
+        status: order.status
+      });
+    });
+
+    // Recent production orders
+    const recentProduction = await ProductionOrder.find()
+      .populate('product', 'name')
+      .sort({ createdAt: -1 })
+      .limit(5);
+    
+    recentProduction.forEach(order => {
+      activities.push({
+        type: 'production',
+        action: 'Production order',
+        description: `Order ${order.orderNumber} for ${order.product.name}`,
+        timestamp: order.createdAt,
+        status: order.status
+      });
+    });
+
+    // Recent purchase orders
+    const recentPurchases = await PurchaseOrder.find()
+      .populate('supplier', 'name')
+      .sort({ createdAt: -1 })
+      .limit(5);
+    
+    recentPurchases.forEach(order => {
+      activities.push({
+        type: 'purchasing',
+        action: 'Purchase order',
+        description: `Order ${order.orderNumber} from ${order.supplier.name}`,
+        timestamp: order.createdAt,
+        status: order.status
+      });
+    });
+
+    // Sort all activities by timestamp
+    activities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    res.json({
+      success: true,
+      data: activities.slice(0, 10) // Return top 10 most recent
+    });
+  } catch (error) {
+    console.error('Get recent activities error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
+// @route   GET /api/dashboard/sales-chart
+// @desc    Get sales data for charts
+// @access  Private
+router.get('/sales-chart', protect, async (req, res) => {
+  try {
+    const { period = 'month' } = req.query;
+    let startDate, endDate;
+
+    if (period === 'week') {
+      startDate = new Date();
+      startDate.setDate(startDate.getDate() - 7);
+      endDate = new Date();
+    } else if (period === 'month') {
+      startDate = new Date();
+      startDate.setMonth(startDate.getMonth() - 1);
+      endDate = new Date();
+    } else if (period === 'year') {
+      startDate = new Date();
+      startDate.setFullYear(startDate.getFullYear() - 1);
+      endDate = new Date();
+    }
+
+    const salesData = await SalesOrder.aggregate([
+      {
+        $match: {
+          orderDate: { $gte: startDate, $lte: endDate },
+          status: { $in: ['confirmed', 'shipped', 'delivered'] }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: '%Y-%m-%d', date: '$orderDate' }
+          },
+          revenue: { $sum: { $ifNull: ['$total', 0] } },
+          orders: { $sum: 1 }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    // Return empty array if no sales data - no sample data
+
+    res.json({
+      success: true,
+      data: salesData
+    });
+  } catch (error) {
+    console.error('Get sales chart error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
+module.exports = router;

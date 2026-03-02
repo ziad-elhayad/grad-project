@@ -1,0 +1,48 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "server/index.js",
+            "use": "@vercel/node",
+            "config": {
+                "includeFiles": [
+                    "server/**/*.js",
+                    "server/config.env"
+                ]
+            }
+        },
+        {
+            "src": "client/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "build",
+                "buildCommand": "npm run build"
+            }
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/api/:path*",
+            "destination": "/server/index.js"
+        }
+    ],
+    "routes": [
+        {
+            "handle": "filesystem"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/client/$1"
+        }
+    ],
+    "crons": [
+        {
+            "path": "/api/forecast/sync",
+            "schedule": "0 * * * *"
+        },
+        {
+            "path": "/api/cron/auto-purchase-orders",
+            "schedule": "0 * * * *"
+        }
+    ]
+}

@@ -1,0 +1,448 @@
+{
+  "common": {
+    "dashboard": "Dashboard",
+    "transactions": "Transactions",
+    "bank": "Bank",
+    "expenses": "Expenses",
+    "attendance": "Attendance",
+    "reports": "Reports",
+    "orders": "Orders",
+    "products": "Products",
+    "employees": "Employees",
+    "customers": "Customers",
+    "suppliers": "Suppliers",
+    "login": "Login",
+    "logout": "Logout",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "create": "Create",
+    "update": "Update",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "close": "Close",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "date": "Date",
+    "amount": "Amount",
+    "status": "Status",
+    "actions": "Actions",
+    "total": "Total",
+    "description": "Description",
+    "notes": "Notes",
+    "category": "Category",
+    "type": "Type",
+    "balance": "Balance",
+    "transaction": "Transaction",
+    "unknown": "Unknown"
+  },
+  "finance": {
+    "title": "Finance",
+    "dashboard": {
+      "title": "Finance Dashboard",
+      "totalBalance": "Total Balance",
+      "unpaidInvoices": "Unpaid Invoices",
+      "paidInvoices": "Paid Invoices",
+      "monthlyExpenses": "Expenses (This Month)",
+      "expensesCount": "expenses",
+      "netCashFlow": "Net Cash Flow",
+      "income": "Income",
+      "outgoing": "Outgoing",
+      "recentTransactions": "Recent Transactions",
+      "vsLastMonth": "vs last month"
+    },
+    "transactions": {
+      "title": "Invoices",
+      "invoiceNumber": "Invoice #",
+      "customer": "Customer",
+      "supplier": "Supplier",
+      "dueDate": "Due Date",
+      "pay": "Pay",
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "payInvoice": "Pay Invoice",
+      "selectBankAccount": "Select Bank Account *",
+      "paymentNotes": "Notes (Optional)",
+      "confirmPayment": "Confirm Payment",
+      "processing": "Processing...",
+      "noInvoices": "No invoices found"
+    },
+    "bank": {
+      "title": "Bank Accounts",
+      "accountBalance": "Account Balance",
+      "recentTransactions": "Recent Transactions",
+      "noAccounts": "No Bank Accounts",
+      "noAccountsMessage": "Bank accounts need to be created in the database first.",
+      "noTransactions": "No recent transactions"
+    },
+    "expenses": {
+      "title": "Expenses",
+      "addExpense": "Add Expense",
+      "expenseTitle": "Title *",
+      "expenseAmount": "Amount (EGP) *",
+      "expenseCategory": "Category *",
+      "expenseDate": "Date *",
+      "createExpense": "Create Expense",
+      "creating": "Creating...",
+      "noExpenses": "No expenses yet"
+    },
+    "bankAccounts": {
+      "title": "Manage Bank Accounts",
+      "addAccount": "Add Bank Account",
+      "accountName": "Account Name *",
+      "initialBalance": "Initial Balance (EGP) *",
+      "createAccount": "Create Account",
+      "updateAccount": "Update Account",
+      "creating": "Creating...",
+      "updating": "Updating...",
+      "deleteConfirm": "Are you sure you want to delete this bank account? This action cannot be undone.",
+      "accessDenied": "Access Denied",
+      "accessDeniedDesc": "Only administrators can manage bank accounts.",
+      "noAccounts": "No bank accounts found. Click \"Add Bank Account\" to create one.",
+      "balanceNote": "Note: Changing balance here will update the account balance directly.",
+      "initialBalanceNote": "Set the initial balance for this account."
+    }
+  },
+  "hr": {
+    "title": "Human Resources",
+    "employees": {
+      "title": "Employees",
+      "addEmployee": "Add Employee",
+      "editEmployee": "Edit Employee",
+      "adminOnly": "Admin/HR Manager Only",
+      "descriptionManage": "Manage employee accounts and information (Admin/Manager/Employee access - HR employees restricted)",
+      "descriptionView": "View employee information (Contact admin, manager, or non-HR employee to add new users)",
+      "addEmployeeRestricted": "Add Employee (Admin/Manager/Employee Only)",
+      "searchPlaceholder": "Search employees by name...",
+      "noEmail": "No email",
+      "hired": "Hired",
+      "holidaysCount": "holidays",
+      "adminAccessRequired": "Admin Access Required",
+      "adminAccessMessage": "Only administrators can create or edit users. Please contact your admin.",
+      "fullName": "Full Name",
+      "role": "Role",
+      "roleEmployee": "Employee",
+      "roleManager": "Manager",
+      "roleAdmin": "Admin",
+      "department": "Department",
+      "selectDepartment": "Select Department",
+      "phoneNumber": "Phone Number",
+      "salary": "Salary",
+      "holidays": "Holidays (Annual Days)",
+      "updateAdminOnly": "Update (Admin Only)",
+      "createAdminOnly": "Create (Admin Only)"
+    },
+    "deleteConfirm": "Are you sure you want to delete this employee?",
+    "errors": {
+      "fetchFailed": "Failed to fetch employees",
+      "validationFailed": "Validation failed",
+      "validationError": "Validation error",
+      "serverError": "Server error. Please try again.",
+      "noPermission": "You do not have permission to perform this action",
+      "saveFailed": "Failed to save employee",
+      "cannotEdit": "Cannot edit employee: User data is missing",
+      "deleteFailed": "Failed to delete employee",
+      "addRestricted": "Only administrators, managers, and non-HR employees can add new users. Please contact your admin, manager, or non-HR employee.",
+      "editRestricted": "Only administrators, managers, and non-HR employees can edit users. Please contact your admin, manager, or non-HR employee.",
+      "deleteRestricted": "Only administrators, managers, and non-HR employees can delete users. Please contact your admin, manager, or non-HR employee.",
+      "adminOnly": "Only administrators can create or edit users. Please contact your admin."
+    }
+  },
+  "sales": {
+    "title": "Sales",
+    "orders": {
+      "title": "Sales Orders",
+      "description": "Manage customer orders and sales transactions",
+      "newOrder": "New Sales Order",
+      "unknownCustomer": "Unknown Customer",
+      "items": "Items",
+      "delivery": "Delivery"
+    },
+    "messages": {
+      "orderCreated": "Sales order created successfully",
+      "orderConfirmed": "Sales order confirmed successfully",
+      "orderShipped": "Sales order shipped successfully",
+      "orderDeleted": "Sales order deleted successfully"
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch sales orders",
+      "addItemRequired": "Please add at least one item with valid product, quantity, and price",
+      "createFailed": "Failed to create sales order",
+      "confirmFailed": "Failed to confirm order",
+      "shipFailed": "Failed to ship order",
+      "deleteFailed": "Failed to delete sales order",
+      "invoiceLoadFailed": "Failed to load invoice"
+    }
+  },
+  "purchasing": {
+    "title": "Purchasing",
+    "orders": {
+      "title": "Purchase Orders",
+      "description": "Manage supplier orders and procurement",
+      "newOrder": "New Purchase Order",
+      "unknownSupplier": "Unknown Supplier",
+      "items": "Items",
+      "delivery": "Delivery"
+    },
+    "messages": {
+      "orderCreated": "Purchase order created successfully",
+      "orderConfirmed": "Purchase order confirmed successfully",
+      "orderReceived": "Purchase order received successfully",
+      "orderDeleted": "Purchase order deleted successfully"
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch purchase orders",
+      "addItemRequired": "Please add at least one item with valid product, quantity, and price",
+      "createFailed": "Failed to create purchase order",
+      "confirmFailed": "Failed to confirm order",
+      "receiveFailed": "Failed to receive order",
+      "deleteFailed": "Failed to delete purchase order",
+      "updateFailed": "Failed to update purchase order"
+    }
+  },
+  "inventory": {
+    "title": "Inventory",
+    "products": {
+      "title": "All Products",
+      "description": "Manage all inventory products and stock levels",
+      "addProduct": "Add Product",
+      "editProduct": "Edit Product",
+      "noProducts": "No products found",
+      "deleteConfirm": "Are you sure you want to delete this product?",
+      "searchPlaceholder": "Search products by name or SKU..."
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch products",
+      "createFailed": "Failed to create product",
+      "updateFailed": "Failed to update product",
+      "deleteFailed": "Failed to delete product",
+      "saveFailed": "Failed to save product",
+      "productNotFound": "Product not found. Refreshing the list...",
+      "cannotDelete": "Cannot delete product"
+    }
+  },
+  "manufacturing": {
+    "title": "Manufacturing",
+    "orders": {
+      "title": "Manufacturing Orders",
+      "description": "Manage production orders and manufacturing processes",
+      "newOrder": "New Manufacturing Order"
+    },
+    "messages": {
+      "orderCreated": "Manufacturing order created successfully",
+      "orderCompleted": "Manufacturing order completed successfully"
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch manufacturing orders",
+      "createFailed": "Failed to create manufacturing order"
+    },
+    "dashboard": {
+      "title": "Manufacturing Dashboard",
+      "description": "Overview of production orders and manufacturing operations",
+      "totalOrders": "Total Orders",
+      "pending": "Pending",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "notCompleted": "Not Completed",
+      "completionRate": "Completion Rate",
+      "ordersCompleted": "{{percent}}% of orders completed",
+      "noProductionData": "No production data available",
+      "recentOrders": "Recent Production Orders",
+      "noOrders": "No production orders yet",
+      "unknownProduct": "Unknown Product"
+    }
+  },
+  "crm": {
+    "title": "CRM",
+    "customers": {
+      "title": "Customers",
+      "description": "Manage customer relationships and information",
+      "addCustomer": "Add Customer",
+      "editCustomer": "Edit Customer",
+      "noCustomers": "No customers found",
+      "deleteConfirm": "Are you sure you want to delete this customer?",
+      "searchPlaceholder": "Search customers by name..."
+    },
+    "complaints": {
+      "title": "Complaints",
+      "description": "Manage customer complaints and support tickets",
+      "addComplaint": "Add Complaint",
+      "noComplaints": "No complaints found",
+      "deleteConfirm": "Are you sure you want to delete this complaint?",
+      "errors": {
+        "fetchFailed": "Failed to fetch complaints",
+        "saveFailed": "Failed to save complaint",
+        "deleteFailed": "Failed to delete complaint",
+        "updateFailed": "Failed to update complaint",
+        "fetchDetailsFailed": "Failed to fetch complaint details"
+      }
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch customers",
+      "createFailed": "Failed to create customer",
+      "updateFailed": "Failed to update customer",
+      "deleteFailed": "Failed to delete customer",
+      "saveFailed": "Failed to save customer",
+      "fetchHistoryFailed": "Failed to fetch sales history"
+    },
+    "dashboard": {
+      "title": "CRM Dashboard",
+      "description": "Overview of customer relationship management",
+      "totalCustomers": "Total Customers",
+      "activeCustomers": "Active Customers",
+      "engagementRate": "Engagement Rate",
+      "newCustomers": "New Customers (30 days)",
+      "recentCustomers": "Recent Customers",
+      "noCustomers": "No customers yet",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "scm": {
+    "title": "SCM",
+    "suppliers": {
+      "title": "Suppliers",
+      "description": "Manage supplier relationships and performance",
+      "addSupplier": "Add Supplier",
+      "editSupplier": "Edit Supplier",
+      "noSuppliers": "No suppliers found",
+      "deleteConfirm": "Are you sure you want to delete this supplier?",
+      "searchPlaceholder": "Search suppliers by name..."
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch suppliers",
+      "createFailed": "Failed to create supplier",
+      "updateFailed": "Failed to update supplier",
+      "deleteFailed": "Failed to delete supplier",
+      "saveFailed": "Failed to save supplier"
+    },
+    "dashboard": {
+      "title": "Supply Chain Management Dashboard",
+      "description": "Overview of supplier management and supply chain operations",
+      "totalSuppliers": "Total Suppliers",
+      "activeSuppliers": "Active Suppliers",
+      "supplierContactRate": "Supplier Contact Rate",
+      "recentSuppliers": "Recent Suppliers",
+      "noSuppliers": "No suppliers yet",
+      "noPhone": "No phone"
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Sign in",
+    "signingIn": "Signing in...",
+    "signInToAccount": "Sign in to your account",
+    "emailAddress": "Email address",
+    "systemLogin": "MTI-ERP System Login"
+  },
+  "navigation": {
+    "mainDashboard": "Main Dashboard",
+    "hr": "HR",
+    "sales": "Sales",
+    "purchasing": "Purchasing",
+    "inventory": "Inventory",
+    "manufacturing": "Manufacturing",
+    "crm": "CRM",
+    "scm": "SCM",
+    "finance": "Finance",
+    "manageAccounts": "Manage Accounts",
+    "dashboard": "Dashboard",
+    "employees": "Employees",
+    "attendance": "Attendance",
+    "attendanceReport": "Attendance Report",
+    "reports": "Reports",
+    "orders": "Orders",
+    "customers": "Customers",
+    "complaints": "Complaints",
+    "suppliers": "Suppliers",
+    "allProducts": "All Products",
+    "rawMaterials": "Raw Materials",
+    "finalProducts": "Final Products",
+    "others": "Others",
+    "forecasting": "Forecasting",
+    "financeForecast": "Finance Forecast",
+    "salesForecast": "Sales Forecast"
+  },
+  "messages": {
+    "loginSuccess": "Login successful",
+    "loginError": "Invalid email or password",
+    "saveSuccess": "Saved successfully",
+    "deleteSuccess": "Deleted successfully",
+    "createSuccess": "Created successfully",
+    "updateSuccess": "Updated successfully",
+    "error": "An error occurred",
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address"
+  },
+  "mainDashboard": {
+    "title": "Dashboard",
+    "description": "Overview of your ERP system performance",
+    "kpis": {
+      "totalEmployees": "Total Employees",
+      "salesRevenue": "Sales Revenue",
+      "totalProducts": "Total Products",
+      "lowStockAlerts": "Low Stock Alerts",
+      "pendingOrders": "Pending Orders",
+      "totalCustomers": "Total Customers",
+      "activeSuppliers": "Active Suppliers",
+      "topProduct": "Top Product",
+      "totalRevenue": "Total Revenue",
+      "ordersThisMonth": "Orders This Month",
+      "activeCustomers": "Active Customers",
+      "totalSpending": "Total Spending",
+      "purchaseOrders": "Purchase Orders",
+      "presentToday": "Present Today",
+      "absentToday": "Absent Today",
+      "newHiresThisMonth": "New Hires This Month",
+      "lowStockItems": "Low Stock Items",
+      "totalValue": "Total Value",
+      "recentMovements": "Recent Movements",
+      "productionOrders": "Production Orders",
+      "completedToday": "Completed Today",
+      "efficiencyRate": "Efficiency Rate",
+      "departmentOverview": "Department Overview",
+      "noDataAvailable": "No data available",
+      "sold": "sold",
+      "noSalesData": "No sales data"
+    },
+    "charts": {
+      "salesRevenueChart": "Sales Revenue Chart",
+      "performanceTrend": "Performance Trend",
+      "recentActivities": "Recent Activities",
+      "employeeAttendance": "Employee Attendance",
+      "productionStatus": "Production Status",
+      "inventoryValue": "Inventory Value",
+      "presentToday": "Present Today",
+      "totalEmployees": "Total Employees",
+      "attendanceRate": "Attendance Rate",
+      "pendingOrders": "Pending Orders",
+      "inProgress": "In Progress",
+      "totalOrders": "Total Orders",
+      "totalValue": "Total Value",
+      "lowStockItems": "Low Stock Items",
+      "noSalesDataAvailable": "No sales data available"
+    },
+    "modules": {
+      "title": "Module Navigation",
+      "hr": "HR Management",
+      "sales": "Sales & Orders",
+      "inventory": "Inventory Control",
+      "purchasing": "Purchasing & SCM",
+      "forecasting": "AI Forecasting",
+      "finance": "Finance & Accounts",
+      "manufacturing": "Manufacturing"
+    }
+  }
+}
