@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+// API Configuration for Deployment
+const API_URL = process.env.REACT_APP_API_URL || 'https://gradproject-production-b6cb.up.railway.app';
+axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? API_URL : '';
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -42,16 +46,16 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post('/api/auth/login', { email, password });
       const { token, user } = response.data;
-      
+
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setUser(user);
-      
+
       return { success: true, user };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Login failed' 
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Login failed'
       };
     }
   };

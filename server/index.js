@@ -10,7 +10,13 @@ dotenv.config({ path: './config.env' });
 const app = express();
 
 // Middleware
-app.use(cors());
+// Middleware - Allow all origins for CORS to fix production connectivity issues
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Database connection
@@ -68,18 +74,18 @@ app.use('*', (req, res) => {
   });
 });
 
-// Export for Vercel
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    try {
+// Export for Vercel & Standard Start for Railway
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  try {
+    // Only start scheduler locally or if specifically asked
+    if (process.env.NODE_ENV !== 'production') {
       schedulerService.start();
-      console.log('Scheduler service started locally');
-    } catch (error) {
-      console.error('Error starting scheduler service:', error);
     }
-  });
-}
+  } catch (error) {
+    console.error('Error starting scheduler service:', error);
+  }
+});
 
 module.exports = app;

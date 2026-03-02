@@ -117,3 +117,5 @@ local/
 
 # Note: Script files like server/scripts/seed.js are NOT ignored and will be included in the repository
 
+
+.vercel
